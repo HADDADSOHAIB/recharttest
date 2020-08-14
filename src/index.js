@@ -5,6 +5,8 @@ import App from './App';
 import Zoom from './Zoom';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+
 
 ReactDOM.render(
   <React.StrictMode>
