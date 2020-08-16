@@ -65,19 +65,25 @@ let dataStart = [
 ];
 
 
-function CustomizedLegend({show, handleClick, meta, handleMouse}) {
+function CustomizedLegend({show, handleClick, meta, handleSlide}) {
   const [ value, setValue ] = useState(0);
+
+  useEffect(() => {
+    handleSlide(value);
+    return () => ''
+  }, [value]);
 
   return (
     <div>
-      <div style={{height: '100px'}} >
+      <div>
         <RangeSlider
           value={value}
           onChange={changeEvent => setValue(changeEvent.target.value)}
           max={dataStart.length}
         />
+        <input type="number" value={value} onChange={e => setValue(e.target.value)} />
       </div>
-      <ul style={{ display: 'flex', flexWrap: 'wrap', listStyle: 'none' }}>
+      <ul style={{  flexWrap: 'wrap', listStyle: 'none' }}>
         {
           Object.keys(dataStart[0]).map((dataKey, index) => {
             if (dataKey !== 'name') {
@@ -160,7 +166,7 @@ export default class Example extends PureComponent {
     super(props);
     this.state = initialState;
     this.handleClick = this.handleClick.bind(this);
-    this.handleMouse = this.handleMouse.bind(this);
+    this.handleSlide = this.handleSlide.bind(this);
   }
 
   componentDidMount(){
@@ -241,8 +247,8 @@ export default class Example extends PureComponent {
     }));
   }
 
-  handleMouse = (e) => {
-    const percent = ((e.clientX - 39 - 1) / e.target.offsetWidth) * 100;
+  handleSlide(value){
+    const percent = (value / dataStart.length) * 100;
     const index = Math.round(percent * dataStart.length/100);
     const left = Math.max(0, index - 50);
     const right = Math.min(dataStart.length, index + 50);
@@ -256,7 +262,7 @@ export default class Example extends PureComponent {
     } = this.state;
 
     return (
-      <div className="highlight-bar-charts" style={{ userSelect: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div className="highlight-bar-charts" style={{ userSelect: 'none' }}>
         <button
           // href="javascript: void(0);"
           className="btn update"
@@ -265,7 +271,7 @@ export default class Example extends PureComponent {
           Zoom Out
         </button>
         <LineChart
-          width={800}
+          width={500}
           height={1000}
           data={data}
           onMouseDown={e => e && this.setState({ refAreaLeft: e.activeLabel })}
@@ -287,7 +293,7 @@ export default class Example extends PureComponent {
             hide
           />
           <Tooltip />
-          <Legend content={<CustomizedLegend handleClick={this.handleClick} handleMouse={this.handleMouse} show={show} meta={meta} />} />
+          <Legend align="left" verticalAlign="middle" content={<CustomizedLegend handleClick={this.handleClick} handleSlide={this.handleSlide} show={show} meta={meta} />} />
           {
             Object.keys(data[0]).map((el, i) => {
               if(el !== 'name' && show[el]) {
