@@ -83,7 +83,7 @@ function CustomizedLegend({show, handleClick, meta, handleSlide}) {
         />
         <input type="number" value={value} onChange={e => setValue(e.target.value)} />
       </div>
-      <ul style={{  flexWrap: 'wrap', listStyle: 'none' }}>
+      <ul style={{ display: 'flex', flexWrap: 'wrap', listStyle: 'none'}}>
         {
           Object.keys(dataStart[0]).map((dataKey, index) => {
             if (dataKey !== 'name') {
@@ -271,7 +271,7 @@ export default class Example extends PureComponent {
           Zoom Out
         </button>
         <LineChart
-          width={500}
+          width={800}
           height={1000}
           data={data}
           onMouseDown={e => e && this.setState({ refAreaLeft: e.activeLabel })}
@@ -293,7 +293,7 @@ export default class Example extends PureComponent {
             hide
           />
           <Tooltip />
-          <Legend align="left" verticalAlign="middle" content={<CustomizedLegend handleClick={this.handleClick} handleSlide={this.handleSlide} show={show} meta={meta} />} />
+          <Legend content={<CustomizedLegend handleClick={this.handleClick} handleSlide={this.handleSlide} show={show} meta={meta} />} />
           {
             Object.keys(data[0]).map((el, i) => {
               if(el !== 'name' && show[el]) {
